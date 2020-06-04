@@ -717,54 +717,54 @@ typedef NS_ENUM(NSUInteger, YYTextMoveDirection) {
     CGFloat extend = 3;
     
     BOOL insetModified = NO;
-    YYTextKeyboardManager *mgr = [YYTextKeyboardManager defaultManager];
+//    YYTextKeyboardManager *mgr = [YYTextKeyboardManager defaultManager];
     
-    if (mgr.keyboardVisible && self.window && self.superview && self.isFirstResponder && !_verticalForm) {
-        CGRect bounds = self.bounds;
-        bounds.origin = CGPointZero;
-        CGRect kbRect = [mgr convertRect:mgr.keyboardFrame toView:self];
-        kbRect.origin.y -= _extraAccessoryViewHeight;
-        kbRect.size.height += _extraAccessoryViewHeight;
-        
-        kbRect.origin.x -= self.contentOffset.x;
-        kbRect.origin.y -= self.contentOffset.y;
-        CGRect inter = CGRectIntersection(bounds, kbRect);
-        if (!CGRectIsNull(inter) && inter.size.height > 1 && inter.size.width > extend) { // self is covered by keyboard
-            if (CGRectGetMinY(inter) > CGRectGetMinY(bounds)) { // keyboard below self.top
-                
-                UIEdgeInsets originalContentInset = self.contentInset;
-                UIEdgeInsets originalScrollIndicatorInsets = self.scrollIndicatorInsets;
-                if (_insetModifiedByKeyboard) {
-                    originalContentInset = _originalContentInset;
-                    originalScrollIndicatorInsets = _originalScrollIndicatorInsets;
-                }
-                
-                if (originalContentInset.bottom < inter.size.height + extend) {
-                    insetModified = YES;
-                    if (!_insetModifiedByKeyboard) {
-                        _insetModifiedByKeyboard = YES;
-                        _originalContentInset = self.contentInset;
-                        _originalScrollIndicatorInsets = self.scrollIndicatorInsets;
-                    }
-                    UIEdgeInsets newInset = originalContentInset;
-                    UIEdgeInsets newIndicatorInsets = originalScrollIndicatorInsets;
-                    newInset.bottom = inter.size.height + extend;
-                    newIndicatorInsets.bottom = newInset.bottom;
-                    UIViewAnimationOptions curve;
-                    if (kiOS7Later) {
-                        curve = 7 << 16;
-                    } else {
-                        curve = UIViewAnimationOptionCurveEaseInOut;
-                    }
-                    [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | curve animations:^{
-                        [super setContentInset:newInset];
-                        [super setScrollIndicatorInsets:newIndicatorInsets];
-                        [self scrollRectToVisible:CGRectInset(rect, -extend, -extend) animated:NO];
-                    } completion:NULL];
-                }
-            }
-        }
-    }
+//    if (mgr.keyboardVisible && self.window && self.superview && self.isFirstResponder && !_verticalForm) {
+//        CGRect bounds = self.bounds;
+//        bounds.origin = CGPointZero;
+//        CGRect kbRect = [mgr convertRect:mgr.keyboardFrame toView:self];
+//        kbRect.origin.y -= _extraAccessoryViewHeight;
+//        kbRect.size.height += _extraAccessoryViewHeight;
+//
+//        kbRect.origin.x -= self.contentOffset.x;
+//        kbRect.origin.y -= self.contentOffset.y;
+//        CGRect inter = CGRectIntersection(bounds, kbRect);
+//        if (!CGRectIsNull(inter) && inter.size.height > 1 && inter.size.width > extend) { // self is covered by keyboard
+//            if (CGRectGetMinY(inter) > CGRectGetMinY(bounds)) { // keyboard below self.top
+//
+//                UIEdgeInsets originalContentInset = self.contentInset;
+//                UIEdgeInsets originalScrollIndicatorInsets = self.scrollIndicatorInsets;
+//                if (_insetModifiedByKeyboard) {
+//                    originalContentInset = _originalContentInset;
+//                    originalScrollIndicatorInsets = _originalScrollIndicatorInsets;
+//                }
+//
+//                if (originalContentInset.bottom < inter.size.height + extend) {
+//                    insetModified = YES;
+//                    if (!_insetModifiedByKeyboard) {
+//                        _insetModifiedByKeyboard = YES;
+//                        _originalContentInset = self.contentInset;
+//                        _originalScrollIndicatorInsets = self.scrollIndicatorInsets;
+//                    }
+//                    UIEdgeInsets newInset = originalContentInset;
+//                    UIEdgeInsets newIndicatorInsets = originalScrollIndicatorInsets;
+//                    newInset.bottom = inter.size.height + extend;
+//                    newIndicatorInsets.bottom = newInset.bottom;
+//                    UIViewAnimationOptions curve;
+//                    if (kiOS7Later) {
+//                        curve = 7 << 16;
+//                    } else {
+//                        curve = UIViewAnimationOptionCurveEaseInOut;
+//                    }
+//                    [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | curve animations:^{
+//                        [super setContentInset:newInset];
+//                        [super setScrollIndicatorInsets:newIndicatorInsets];
+//                        [self scrollRectToVisible:CGRectInset(rect, -extend, -extend) animated:NO];
+//                    } completion:NULL];
+//                }
+//            }
+//        }
+//    }
     if (!insetModified) {
         [UIView animateWithDuration:0.25 delay:0 options:UIViewAnimationOptionBeginFromCurrentState | UIViewAnimationOptionAllowUserInteraction | UIViewAnimationCurveEaseOut animations:^{
             [self _restoreInsetsAnimated:NO];
